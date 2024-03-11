@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  shoppingList List[]
+  categories   Category[]
+}
+
+model List {
+  id         String     @id @default(uuid())
+  name       String
+  isComplete Boolean    @default(false)
+  createdAt  DateTime   @default(now())
+  updateAt   DateTime   @updatedAt
+  User       User?      @relation(fields: [owner], references: [id])
+  owner      String?
+  listItem   ListItem[]
+}
+
+model ListItem {
+  id     String  @id @default(uuid())
+  pcs    Int
+  item   Item[]
+  List   List?   @relation(fields: [listId], references: [id])
+  listId String?
+}
+
+model Item {
+  id         String     @id @default(uuid())
+  name       String
+  note       String
+  image_url  String
+  category   Category[]
+  ListItem   ListItem?  @relation(fields: [listItemId], references: [id])
+  listItemId String?
+}
+
+model Category {
+  id     String  @id @default(uuid())
+  name   String
+  User   User?   @relation(fields: [owner], references: [id])
+  owner  String?
+  Item   Item?   @relation(fields: [itemId], references: [id])
+  itemId String?
+}
