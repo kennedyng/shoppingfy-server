@@ -1,9 +1,10 @@
 // routes.ts
 import { Router, Request, Response } from "express";
-import { loginUser } from "../controllers/auth";
+import { loginUser, registerUser } from "../controllers/auth";
 
 const authRouter = Router();
 
-authRouter.get("/login", loginUser);
+authRouter.post("/login", loginUser);
+authRouter.post("/register", registerUser);
 
 export { authRouter };
