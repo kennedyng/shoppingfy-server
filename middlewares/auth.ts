@@ -23,7 +23,7 @@ export const checkAuth = (
   // Verify the token
   jwt.verify(
     token,
-    process.env.JWT_SECRETE as string,
+    process.env.JWT_SECRET as string,
     (err: any, userData: any) => {
       if (err) {
         return res.status(403).json({ error: "Invalid token" });

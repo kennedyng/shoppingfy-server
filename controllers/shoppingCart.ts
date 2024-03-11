@@ -2,7 +2,7 @@ import { NextFunction, Response } from "express";
 import prisma from "../lib/utils/prisma";
 import { CustomRequest } from "../types";
 
-const createNewItem = async (
+const completeShoppingCart = async (
   req: CustomRequest,
   res: Response,
   next: NextFunction
@@ -42,4 +42,4 @@ const getItemById = async (
   }
 };
 
-export { createNewItem };
+export { completeShoppingCart };
