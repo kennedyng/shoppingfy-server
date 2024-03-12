@@ -1,5 +1,6 @@
 import { Request as ExpressRequest, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+import { AuthenticationError } from "../lib/utils/exceptions";
 
 // Define a new interface that extends ExpressRequest
 interface CustomRequest extends ExpressRequest {
@@ -26,7 +27,8 @@ export const checkAuth = (
     process.env.JWT_SECRET as string,
     (err: any, userData: any) => {
       if (err) {
-        return res.status(403).json({ error: "Invalid token" });
+        // Catch the error and pass it to Express's error handling middleware
+        throw new AuthenticationError();
       }
       req.userData = userData; // Store user data in req.userData
       next();

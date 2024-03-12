@@ -1,10 +1,11 @@
 // routes.ts
 import { Router } from "express";
-import { createNewCategory } from "../controllers/category";
+import { createNewCategory, getUserCategories } from "../controllers/category";
 import { checkAuth } from "../middlewares/auth";
 
-const categoryRouter = Router();
+const router = Router();
 
-categoryRouter.post("/create", checkAuth, createNewCategory);
+router.post("/create", checkAuth, createNewCategory);
+router.get("/", checkAuth, getUserCategories);
 
-export { categoryRouter };
+export { router as categoryRouter };

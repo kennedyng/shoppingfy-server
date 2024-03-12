@@ -24,4 +24,22 @@ const createNewCategory = async (
   }
 };
 
-export { createNewCategory };
+const getUserCategories = async (
+  req: CustomRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  const { userId } = req?.userData;
+  try {
+    const createdData = await prisma.category.findMany({
+      where: {
+        owner: userId,
+      },
+    });
+    return res.status(201).json(createdData);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export { createNewCategory, getUserCategories };
