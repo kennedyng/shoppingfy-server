@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  // url      = env("DATABASE_URL")
+  url      = "file:./dev.db"
 }
 
 model User {
@@ -17,44 +18,62 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  shoppingList List[]
-  categories   Category[]
-}
+  //reslationships
 
-model List {
-  id         String     @id @default(uuid())
-  name       String
-  isComplete Boolean    @default(false)
-  createdAt  DateTime   @default(now())
-  updateAt   DateTime   @updatedAt
-  User       User?      @relation(fields: [owner], references: [id])
-  owner      String?
-  listItem   ListItem[]
-}
-
-model ListItem {
-  id     String  @id @default(uuid())
-  pcs    Int
-  item   Item[]
-  List   List?   @relation(fields: [listId], references: [id])
-  listId String?
+  items         Item[]
+  categories    Category[]
+  shoppingLists ShoppingList[]
 }
 
 model Item {
-  id         String     @id @default(uuid())
-  name       String
-  note       String
-  image_url  String
-  category   Category[]
-  ListItem   ListItem?  @relation(fields: [listItemId], references: [id])
-  listItemId String?
+  id        String @id @default(uuid())
+  name      String
+  note      String
+  image_url String
+
+  //relationship
+  User              User?            @relation(fields: [userId], references: [id])
+  userId            String?
+  Category          Category?        @relation(fields: [categoryId], references: [id])
+  categoryId        String?
+  ShppingListItem   ShppingListItem? @relation(fields: [shppingListItemId], references: [id])
+  shppingListItemId String?
 }
 
 model Category {
-  id     String  @id @default(uuid())
-  name   String
-  User   User?   @relation(fields: [owner], references: [id])
-  owner  String?
-  Item   Item?   @relation(fields: [itemId], references: [id])
-  itemId String?
+  id   String @id @default(uuid())
+  name String
+
+  //relationship
+  User   User?   @relation(fields: [userId], references: [id])
+  userId String?
+
+  items Item[]
+}
+
+model ShoppingList {
+  id         String                @id @default(uuid())
+  name       String
+  isComplete Boolean               @default(false)
+  createdAt  DateTime              @default(now())
+  updateAt   DateTime              @updatedAt
+  items      ShppingListCategory[]
+  User       User?                 @relation(fields: [userId], references: [id])
+  userId     String?
+}
+
+model ShppingListCategory {
+  id             String            @id @default(uuid())
+  List_items     ShppingListItem[]
+  ShoppingList   ShoppingList?     @relation(fields: [shoppingListId], references: [id])
+  shoppingListId String?
+}
+
+model ShppingListItem {
+  id  String @id @default(uuid())
+  pcs Int
+
+  items                 Item[]
+  ShppingListCategory   ShppingListCategory? @relation(fields: [shppingListCategoryId], references: [id])
+  shppingListCategoryId String?
 }

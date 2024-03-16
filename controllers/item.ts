@@ -7,14 +7,16 @@ const createNewItem = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { name, note, image_url, category_id } = req.body;
   try {
+    const { name, note, image_url, category } = req.body;
+    const { userId } = req?.userData;
     const createdData = await prisma.item.create({
       data: {
         name,
         note,
         image_url,
-        category: category_id,
+        categoryId: category,
+        userId,
       },
     });
 

@@ -13,7 +13,7 @@ const createNewCategory = async (
   try {
     const createdData = await prisma.category.create({
       data: {
-        owner: userId,
+        userId,
         name,
       },
     });
@@ -29,11 +29,11 @@ const getUserCategories = async (
   res: Response,
   next: NextFunction
 ) => {
-  const { userId } = req?.userData;
   try {
+    const { userId } = req?.userData;
     const createdData = await prisma.category.findMany({
       where: {
-        owner: userId,
+        userId,
       },
     });
     return res.status(201).json(createdData);

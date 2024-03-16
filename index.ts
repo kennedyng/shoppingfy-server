@@ -25,8 +25,9 @@ app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*"); // You can set a specific origin here instead of *
   next();
 });
-
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+
 app.use(cors({ origin: allowedOrigins }));
 
 // Middleware to log requests
