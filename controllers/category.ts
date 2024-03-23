@@ -35,6 +35,9 @@ const getUserCategories = async (
       where: {
         userId,
       },
+      include: {
+        items: true,
+      },
     });
     return res.status(201).json(createdData);
   } catch (error) {
