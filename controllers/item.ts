@@ -8,14 +8,14 @@ const createNewItem = async (
   next: NextFunction
 ) => {
   try {
-    const { name, note, image_url, category } = req.body;
+    const { name, note, image_url, categoryId } = req.body;
     const { userId } = req?.userData;
     const createdData = await prisma.item.create({
       data: {
         name,
         note,
         image_url,
-        categoryId: category,
+        categoryId,
         userId,
       },
     });
